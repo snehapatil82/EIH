@@ -1,0 +1,53 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: pgvector/pgvector:pg16
+    container_name: eih_postgres
+    environment:
+      POSTGRES_USER: eih_user
+      POSTGRES_PASSWORD: eih_password
+      POSTGRES_DB: eih_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U eih_user -d eih_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: eih_backend
+    environment:
+      - DATABASE_URL=postgresql+asyncpg://eih_user:eih_password@postgres:5432/eih_db
+      - SYNC_DATABASE_URL=postgresql://eih_user:eih_password@postgres:5432/eih_db
+      - LLM_PROVIDER=${LLM_PROVIDER:-mock}
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - GROQ_API_KEY=${GROQ_API_KEY}
+      - VECTOR_STORE=chroma
+    ports:
+      - "8000:8000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    volumes:
+      - ./backend/cloned_repos:/app/cloned_repos
+      - ./backend/workspaces:/app/workspaces
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: eih_frontend
+    ports:
+      - "5173:80"
+    depends_on:
+      - backend
+
+volumes:
+  pgdata:
