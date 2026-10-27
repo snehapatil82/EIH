@@ -1,8 +1,8 @@
 ###############################################################################
-# Render Blueprint — Engineering Intelligence Hub
+# Render Blueprint — Engineering Intelligence Hub Backend
 #
-# This file describes all services for one-click deploy on Render.
-# Push this repo to GitHub and connect it on https://dashboard.render.com
+# This file describes the backend FastAPI service for one-click deploy on Render.
+# The frontend is hosted on Vercel.
 ###############################################################################
 
 services:
@@ -19,35 +19,14 @@ services:
       - key: ENVIRONMENT
         value: production
       - key: LLM_PROVIDER
-        sync: false       # set manually in Render dashboard
+        value: openai     # or groq / mock
       - key: OPENAI_API_KEY
-        sync: false
+        sync: false       # set manually in Render dashboard
       - key: GROQ_API_KEY
         sync: false
       - key: GITHUB_TOKEN
         sync: false
       - key: CORS_ORIGINS
-        sync: false       # set to your frontend URL after deploy
+        value: "*"
       - key: PYTHON_VERSION
         value: "3.11.9"
-
-  # ─── Frontend: Vite React static site ─────────────────────────────────
-  - type: web
-    name: eih-frontend
-    runtime: static
-    region: oregon
-    plan: free
-    rootDir: frontend
-    buildCommand: npm install && npm run build
-    staticPublishPath: dist
-    headers:
-      - path: /*
-        name: Cache-Control
-        value: public, max-age=0, must-revalidate
-    routes:
-      - type: rewrite
-        source: /*
-        destination: /index.html
-    envVars:
-      - key: VITE_API_BASE_URL
-        sync: false       # set to https://eih-backend.onrender.com/api/v1
