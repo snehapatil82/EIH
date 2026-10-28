@@ -13,13 +13,14 @@ services:
     region: oregon
     plan: free            # change to "starter" for always-on
     rootDir: backend
-    buildCommand: pip install -r requirements.txt
-    startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    buildCommand: pip install --upgrade pip setuptools wheel && pip install --no-cache-dir -r requirements.txt
+    startCommand: python -m uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    healthCheckPath: /api/v1/health
     envVars:
       - key: ENVIRONMENT
         value: production
       - key: LLM_PROVIDER
-        value: openai     # or groq / mock
+        value: mock       # change to "openai" or "groq" once keys are set
       - key: OPENAI_API_KEY
         sync: false       # set manually in Render dashboard
       - key: GROQ_API_KEY
@@ -29,4 +30,4 @@ services:
       - key: CORS_ORIGINS
         value: "*"
       - key: PYTHON_VERSION
-        value: "3.11.9"
+        value: "3.11.8"
