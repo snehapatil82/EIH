@@ -1,4 +1,4 @@
-import { apiClient } from './api';
+import { apiClient, API_BASE_URL } from './api';
 import { EngineeringTask } from '../types/task';
 import { CodeChange, ValidationResult, ReviewResult, TaskDiagram } from '../types/changes';
 
@@ -62,7 +62,7 @@ export const taskService = {
     onComplete: (status: string) => void,
     onError: (error: any) => void
   ): () => void {
-    const eventSource = new EventSource(`/api/v1/tasks/${taskId}/stream`);
+    const eventSource = new EventSource(`${API_BASE_URL}/tasks/${taskId}/stream`);
 
     eventSource.addEventListener('update', (event) => {
       try {

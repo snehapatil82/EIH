@@ -1,4 +1,4 @@
-import { apiClient } from './api';
+import { apiClient, API_BASE_URL } from './api';
 import {
   TerminalInfo,
   TerminalHistoryEntry,
@@ -37,7 +37,7 @@ export const terminalService = {
     onError: (error: string) => void,
   ): () => void {
     const encodedCmd = encodeURIComponent(command);
-    const url = `/api/v1/tasks/${taskId}/terminal/stream?command=${encodedCmd}`;
+    const url = `${API_BASE_URL}/tasks/${taskId}/terminal/stream?command=${encodedCmd}`;
     const es = new EventSource(url);
 
     es.addEventListener('output', (event) => {
