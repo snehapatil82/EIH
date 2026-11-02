@@ -238,15 +238,20 @@ export const EngineeringTaskPage: React.FC<EngineeringTaskPageProps> = ({ select
   return (
     <div className="p-8 space-y-6 max-w-7xl mx-auto">
       {/* Top Header & Requirement Input */}
-      <div className="bg-gradient-to-r from-slate-900 via-slate-900 to-cyan-950/40 border border-slate-800 rounded-2xl p-6 shadow-xl space-y-4">
+      <div className="glass-card rounded-2xl p-6 md:p-8 shadow-2xl space-y-4 relative overflow-hidden">
         <div>
-          <div className="flex items-center gap-2 mb-1">
-            <Bot className="w-5 h-5 text-cyan-400" />
-            <h2 className="text-lg font-bold text-slate-100">
-              Autonomous Engineering Studio ({selectedRepo.name})
-            </h2>
+          <div className="flex items-center gap-2.5 mb-1.5">
+            <div className="p-2 rounded-xl bg-cyan-950/70 border border-cyan-500/30 text-cyan-400 shadow-[0_0_12px_-3px_rgba(6,182,212,0.3)]">
+              <Bot className="w-5 h-5" />
+            </div>
+            <div>
+              <h2 className="text-lg md:text-xl font-bold text-slate-100 tracking-tight">
+                Autonomous Engineering Studio
+              </h2>
+              <span className="text-xs font-mono text-cyan-300">Target: {selectedRepo.owner}/{selectedRepo.name}</span>
+            </div>
           </div>
-          <p className="text-xs text-slate-400">
+          <p className="text-xs md:text-sm text-slate-400 max-w-3xl leading-relaxed">
             Submit a natural-language requirement. Specialized agents will plan, implement, test, document, and validate changes before asking for your approval.
           </p>
         </div>
@@ -255,14 +260,14 @@ export const EngineeringTaskPage: React.FC<EngineeringTaskPageProps> = ({ select
           <input
             type="text"
             placeholder="e.g. 'Add JWT authentication, create tests and update documentation'..."
-            className="flex-1 bg-slate-950 border border-slate-750 focus:border-cyan-500 rounded-xl px-4 py-2.5 text-sm text-slate-100 placeholder-slate-500 transition-colors"
+            className="flex-1 bg-slate-950/90 border border-slate-750/90 focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500/30 rounded-xl px-4 py-3 text-xs md:text-sm text-slate-100 placeholder-slate-500 transition-all shadow-inner"
             value={requirementInput}
             onChange={(e) => setRequirementInput(e.target.value)}
             disabled={isSubmitting}
           />
           <div className="flex items-center gap-2">
             <select
-              className="bg-slate-950 border border-slate-750 text-xs text-slate-300 rounded-xl px-3 py-2.5 focus:outline-none"
+              className="bg-slate-900 border border-slate-750 text-xs font-medium text-slate-200 rounded-xl px-3.5 py-3 focus:outline-none focus:border-cyan-500/60 cursor-pointer shadow-sm"
               value={workflowPref}
               onChange={(e) => setWorkflowPref(e.target.value)}
               disabled={isSubmitting}
@@ -290,7 +295,7 @@ export const EngineeringTaskPage: React.FC<EngineeringTaskPageProps> = ({ select
           {SAMPLE_REQUIREMENTS.map((prompt, i) => (
             <button
               key={i}
-              className="text-[11px] px-2.5 py-1 rounded bg-slate-800 hover:bg-slate-750 text-cyan-300 border border-slate-700 transition-colors"
+              className="text-[11px] px-2.5 py-1 rounded-lg bg-slate-900/90 hover:bg-slate-800 text-cyan-300 border border-slate-750/80 hover:border-cyan-500/40 transition-all cursor-pointer shadow-sm disabled:opacity-40"
               onClick={() => handleCreateTask(prompt)}
               disabled={isSubmitting}
             >
@@ -305,7 +310,7 @@ export const EngineeringTaskPage: React.FC<EngineeringTaskPageProps> = ({ select
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
           {/* Left Column: Task Status & Agent Timeline */}
           <div className="lg:col-span-4 space-y-4">
-            <div className="bg-slate-900/60 border border-slate-800 rounded-xl p-5 shadow-xl space-y-3">
+            <div className="glass-card rounded-2xl p-5 shadow-xl space-y-3">
               <div className="flex items-center justify-between">
                 <span className="text-xs font-semibold uppercase tracking-wider text-slate-400">
                   Task Overview
@@ -318,6 +323,7 @@ export const EngineeringTaskPage: React.FC<EngineeringTaskPageProps> = ({ select
                       ? 'info'
                       : 'cyan'
                   }
+                  dot
                 >
                   {activeTask.complexity}
                 </Badge>
@@ -340,7 +346,7 @@ export const EngineeringTaskPage: React.FC<EngineeringTaskPageProps> = ({ select
 
             {/* Task Switcher */}
             {tasks.length > 1 && (
-              <div className="bg-slate-900/60 border border-slate-800 rounded-xl p-4 space-y-2">
+              <div className="glass-card rounded-2xl p-4 space-y-2">
                 <h4 className="text-xs font-semibold uppercase tracking-wider text-slate-400">
                   Previous Tasks ({tasks.length})
                 </h4>
@@ -349,10 +355,10 @@ export const EngineeringTaskPage: React.FC<EngineeringTaskPageProps> = ({ select
                     <button
                       key={t.id}
                       onClick={() => selectTask(t.id)}
-                      className={`w-full text-left p-2 rounded-lg text-xs truncate transition-colors ${
+                      className={`w-full text-left p-2 rounded-xl text-xs truncate transition-all cursor-pointer ${
                         activeTask.id === t.id
-                          ? 'bg-cyan-950 text-cyan-300 font-semibold'
-                          : 'text-slate-400 hover:bg-slate-800 text-slate-300'
+                          ? 'bg-cyan-950/80 text-cyan-300 font-semibold border border-cyan-500/30'
+                          : 'text-slate-400 hover:bg-slate-850 hover:text-slate-200'
                       }`}
                     >
                       {t.requirement}
@@ -376,34 +382,42 @@ export const EngineeringTaskPage: React.FC<EngineeringTaskPageProps> = ({ select
             />
 
             {/* Studio Navigation Tabs */}
-            <div className="flex items-center gap-2 border-b border-slate-800 pb-2">
+            <div className="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none border-b border-slate-800/80">
               <button
-                className={`text-xs font-semibold px-3 py-1.5 rounded-lg transition-colors ${
-                  activeTab === 'diffs' ? 'bg-cyan-600 text-white shadow' : 'text-slate-400 hover:text-slate-200'
+                className={`text-xs font-semibold px-3.5 py-2 rounded-xl transition-all whitespace-nowrap cursor-pointer border ${
+                  activeTab === 'diffs'
+                    ? 'bg-cyan-500/15 text-cyan-300 border-cyan-500/40 shadow-sm shadow-cyan-950/40'
+                    : 'text-slate-400 hover:text-slate-200 hover:bg-slate-850/80 border-transparent'
                 }`}
                 onClick={() => setActiveTab('diffs')}
               >
                 Code Diffs ({changes.length})
               </button>
               <button
-                className={`text-xs font-semibold px-3 py-1.5 rounded-lg transition-colors ${
-                  activeTab === 'validation' ? 'bg-cyan-600 text-white shadow' : 'text-slate-400 hover:text-slate-200'
+                className={`text-xs font-semibold px-3.5 py-2 rounded-xl transition-all whitespace-nowrap cursor-pointer border ${
+                  activeTab === 'validation'
+                    ? 'bg-cyan-500/15 text-cyan-300 border-cyan-500/40 shadow-sm shadow-cyan-950/40'
+                    : 'text-slate-400 hover:text-slate-200 hover:bg-slate-850/80 border-transparent'
                 }`}
                 onClick={() => setActiveTab('validation')}
               >
                 Validation & Tests ({validations.length})
               </button>
               <button
-                className={`text-xs font-semibold px-3 py-1.5 rounded-lg transition-colors ${
-                  activeTab === 'review' ? 'bg-cyan-600 text-white shadow' : 'text-slate-400 hover:text-slate-200'
+                className={`text-xs font-semibold px-3.5 py-2 rounded-xl transition-all whitespace-nowrap cursor-pointer border ${
+                  activeTab === 'review'
+                    ? 'bg-cyan-500/15 text-cyan-300 border-cyan-500/40 shadow-sm shadow-cyan-950/40'
+                    : 'text-slate-400 hover:text-slate-200 hover:bg-slate-850/80 border-transparent'
                 }`}
                 onClick={() => setActiveTab('review')}
               >
                 Security & Quality Audit
               </button>
               <button
-                className={`text-xs font-semibold px-3 py-1.5 rounded-lg transition-colors ${
-                  activeTab === 'diagrams' ? 'bg-cyan-600 text-white shadow' : 'text-slate-400 hover:text-slate-200'
+                className={`text-xs font-semibold px-3.5 py-2 rounded-xl transition-all whitespace-nowrap cursor-pointer border ${
+                  activeTab === 'diagrams'
+                    ? 'bg-cyan-500/15 text-cyan-300 border-cyan-500/40 shadow-sm shadow-cyan-950/40'
+                    : 'text-slate-400 hover:text-slate-200 hover:bg-slate-850/80 border-transparent'
                 }`}
                 onClick={() => setActiveTab('diagrams')}
               >

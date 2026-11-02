@@ -310,28 +310,28 @@ export const ChatPage: React.FC<ChatPageProps> = ({ selectedRepo }) => {
         {/* Messages Stream */}
         <div className="flex-1 overflow-y-auto px-4 py-6 space-y-4 max-w-4xl w-full mx-auto">
           {messages.length === 0 ? (
-            <div className="my-auto py-12 px-6 text-center space-y-6 bg-slate-900/40 border border-slate-800/80 rounded-2xl max-w-2xl mx-auto shadow-xl">
-              <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-cyan-950 to-blue-900/60 border border-cyan-800/60 flex items-center justify-center mx-auto shadow-inner">
-                <Sparkles className="w-6 h-6 text-cyan-400" />
+            <div className="my-auto py-12 px-6 text-center space-y-6 glass-card rounded-3xl max-w-2xl mx-auto shadow-2xl relative overflow-hidden">
+              <div className="w-14 h-14 rounded-2xl bg-gradient-to-tr from-cyan-950 via-cyan-900 to-blue-900/60 border border-cyan-500/30 flex items-center justify-center mx-auto shadow-lg shadow-cyan-500/20">
+                <Sparkles className="w-7 h-7 text-cyan-400" />
               </div>
 
               <div>
-                <h3 className="text-lg font-bold text-slate-100">
+                <h3 className="text-xl font-bold text-slate-100 tracking-tight">
                   Repository Intelligence Assistant
                 </h3>
-                <p className="text-xs text-slate-400 max-w-md mx-auto mt-1.5 leading-relaxed">
+                <p className="text-xs md:text-sm text-slate-400 max-w-md mx-auto mt-2 leading-relaxed">
                   Ask architectural, implementation, or flow questions about{' '}
-                  <span className="text-cyan-300 font-medium">{selectedRepo.name}</span>. Every answer is grounded in verified repository code with line citations.
+                  <span className="text-cyan-300 font-semibold">{selectedRepo.name}</span>. Every answer is grounded in verified repository code with line citations.
                 </p>
               </div>
 
               {/* Sample Question Chips */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 pt-2 text-left">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2 text-left">
                 {SAMPLE_QUESTIONS.map((q, i) => (
                   <button
                     key={i}
                     onClick={() => handleSend(q)}
-                    className="p-3 bg-slate-900/90 hover:bg-slate-850 border border-slate-800 hover:border-cyan-500/50 rounded-xl text-xs text-slate-300 transition-all text-left group shadow-sm flex items-start gap-2"
+                    className="p-3.5 bg-slate-950/80 hover:bg-slate-900 border border-slate-800/80 hover:border-cyan-500/50 rounded-xl text-xs text-slate-300 transition-all text-left group shadow-sm flex items-start gap-2.5 cursor-pointer hover:-translate-y-0.5"
                   >
                     <span className="text-cyan-400 font-mono mt-0.5 font-bold">#</span>
                     <span className="group-hover:text-cyan-200 transition-colors leading-relaxed">
@@ -345,35 +345,35 @@ export const ChatPage: React.FC<ChatPageProps> = ({ selectedRepo }) => {
             messages.map((msg) => (
               <div
                 key={msg.id}
-                className={`flex items-start gap-3 p-4 rounded-2xl border transition-all ${
+                className={`flex items-start gap-3.5 p-4 md:p-5 rounded-2xl border transition-all animate-fade-in ${
                   msg.role === 'user'
-                    ? 'bg-slate-900/50 border-slate-800/80 ml-8 sm:ml-16 shadow-sm'
-                    : 'bg-slate-900/90 border-slate-800 mr-4 sm:mr-12 shadow-lg'
+                    ? 'bg-slate-900/90 border-slate-750/90 ml-8 sm:ml-16 shadow-md'
+                    : 'glass-card border-slate-800/90 mr-4 sm:mr-12 shadow-xl'
                 }`}
               >
                 <div
-                  className={`w-7 h-7 rounded-xl flex items-center justify-center flex-shrink-0 mt-0.5 ${
+                  className={`w-8 h-8 rounded-xl flex items-center justify-center flex-shrink-0 mt-0.5 shadow-md ${
                     msg.role === 'user'
-                      ? 'bg-cyan-600 text-white shadow-md shadow-cyan-600/20'
-                      : 'bg-gradient-to-tr from-purple-600 via-cyan-600 to-blue-600 text-white shadow-md shadow-cyan-900/20'
+                      ? 'bg-cyan-600 text-white shadow-cyan-600/30'
+                      : 'bg-gradient-to-tr from-purple-600 via-cyan-600 to-blue-600 text-white shadow-cyan-900/40 border border-cyan-400/30'
                   }`}
                 >
                   {msg.role === 'user' ? <User className="w-4 h-4" /> : <Bot className="w-4 h-4" />}
                 </div>
 
                 <div className="flex-1 min-w-0 space-y-3">
-                  <div className="flex items-center justify-between text-xs text-slate-500 pb-1 border-b border-slate-800/40">
+                  <div className="flex items-center justify-between text-xs text-slate-500 pb-1.5 border-b border-slate-800/60">
                     <span className="font-semibold text-slate-300">
                       {msg.role === 'user' ? 'You' : 'EIH Intelligence'}
                     </span>
                     <div className="flex items-center gap-2">
                       <button
                         onClick={() => handleCopyText(msg.id, msg.content)}
-                        className="hover:text-cyan-400 transition-colors p-1"
+                        className="hover:text-cyan-400 transition-colors p-1 rounded-md hover:bg-slate-800/60"
                         title="Copy to clipboard"
                       >
                         {copiedId === msg.id ? (
-                          <Check className="w-3.5 h-3.5 text-green-400" />
+                          <Check className="w-3.5 h-3.5 text-emerald-400" />
                         ) : (
                           <Copy className="w-3.5 h-3.5" />
                         )}
@@ -381,7 +381,7 @@ export const ChatPage: React.FC<ChatPageProps> = ({ selectedRepo }) => {
                     </div>
                   </div>
 
-                  <div className="prose prose-invert prose-xs max-w-none text-slate-200 leading-relaxed font-sans">
+                  <div className="prose prose-invert prose-xs md:prose-sm max-w-none text-slate-200 leading-relaxed font-sans">
                     <ReactMarkdown remarkPlugins={[remarkGfm]}>{msg.content}</ReactMarkdown>
                   </div>
 
@@ -404,9 +404,9 @@ export const ChatPage: React.FC<ChatPageProps> = ({ selectedRepo }) => {
           )}
 
           {isLoading && (
-            <div className="flex items-center gap-3 p-4 bg-slate-900/70 border border-slate-800 rounded-2xl mr-8 shadow-md">
+            <div className="flex items-center gap-3 p-4 glass-card border border-slate-800 rounded-2xl mr-8 shadow-md animate-pulse">
               <Spinner size="md" />
-              <span className="text-xs text-slate-300">
+              <span className="text-xs text-slate-300 font-medium">
                 Retrieving codebase evidence & synthesizing grounded answer...
               </span>
             </div>
@@ -416,7 +416,7 @@ export const ChatPage: React.FC<ChatPageProps> = ({ selectedRepo }) => {
         </div>
 
         {/* Input Bar */}
-        <div className="p-4 border-t border-slate-800/90 bg-slate-900/70 backdrop-blur-md">
+        <div className="p-4 border-t border-slate-800/90 bg-slate-950/80 backdrop-blur-xl">
           <form
             onSubmit={(e) => {
               e.preventDefault();
@@ -428,7 +428,7 @@ export const ChatPage: React.FC<ChatPageProps> = ({ selectedRepo }) => {
               ref={inputRef}
               type="text"
               placeholder="Ask anything about the codebase (e.g. 'Where is the database connection initialized?')..."
-              className="w-full bg-slate-900 border border-slate-750 focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 rounded-2xl pl-4 pr-24 py-3.5 text-xs sm:text-sm text-slate-100 placeholder-slate-500 shadow-xl transition-colors"
+              className="w-full bg-slate-900/90 border border-slate-750/90 focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500/40 rounded-2xl pl-4 pr-24 py-3.5 text-xs sm:text-sm text-slate-100 placeholder-slate-500 shadow-xl transition-all"
               value={inputQuery}
               onChange={(e) => setInputQuery(e.target.value)}
               disabled={isLoading}
@@ -438,7 +438,7 @@ export const ChatPage: React.FC<ChatPageProps> = ({ selectedRepo }) => {
                 type="submit"
                 variant="primary"
                 size="sm"
-                className="h-8 px-3 rounded-xl bg-cyan-600 hover:bg-cyan-500 text-white font-medium"
+                className="h-9 px-4 rounded-xl"
                 disabled={!inputQuery.trim() || isLoading}
                 rightIcon={<Send className="w-3.5 h-3.5" />}
               >

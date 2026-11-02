@@ -21,23 +21,29 @@ export const Button: React.FC<ButtonProps> = ({
   ...props
 }) => {
   const variantStyles = {
-    primary: 'bg-cyan-600 hover:bg-cyan-500 text-white shadow-lg shadow-cyan-950/50 border border-cyan-500/30',
-    secondary: 'bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700',
-    success: 'bg-emerald-600 hover:bg-emerald-500 text-white border border-emerald-500/30',
-    danger: 'bg-rose-600 hover:bg-rose-500 text-white border border-rose-500/30',
-    outline: 'bg-transparent hover:bg-slate-800/60 text-slate-300 border border-slate-700',
-    ghost: 'bg-transparent hover:bg-slate-800/40 text-slate-400 hover:text-slate-200 border border-transparent',
+    primary:
+      'bg-gradient-to-r from-cyan-500 via-sky-500 to-blue-600 hover:from-cyan-400 hover:via-sky-400 hover:to-blue-500 text-white shadow-lg shadow-cyan-500/20 border border-cyan-400/30 hover:shadow-cyan-500/35',
+    secondary:
+      'bg-slate-800/90 hover:bg-slate-750 text-slate-200 border border-slate-700/80 hover:border-slate-600 shadow-sm',
+    success:
+      'bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white border border-emerald-400/30 shadow-lg shadow-emerald-950/40',
+    danger:
+      'bg-gradient-to-r from-rose-600 to-red-600 hover:from-rose-500 hover:to-red-500 text-white border border-rose-400/30 shadow-lg shadow-rose-950/40',
+    outline:
+      'bg-slate-900/40 hover:bg-slate-800/80 text-slate-200 border border-slate-750 hover:border-cyan-500/50 hover:text-cyan-300',
+    ghost:
+      'bg-transparent hover:bg-slate-800/60 text-slate-400 hover:text-slate-100 border border-transparent',
   };
 
   const sizeStyles = {
-    sm: 'px-2.5 py-1.5 text-xs font-medium rounded',
-    md: 'px-3.5 py-2 text-sm font-medium rounded-lg',
-    lg: 'px-5 py-2.5 text-base font-semibold rounded-lg',
+    sm: 'px-3 py-1.5 text-xs font-medium rounded-lg',
+    md: 'px-4 py-2 text-sm font-medium rounded-xl',
+    lg: 'px-5 py-2.5 text-base font-semibold rounded-xl',
   };
 
   return (
     <button
-      className={`inline-flex items-center justify-center gap-2 transition-all duration-150 disabled:opacity-50 disabled:cursor-not-allowed ${variantStyles[variant]} ${sizeStyles[size]} ${className}`}
+      className={`inline-flex items-center justify-center gap-2 transition-all duration-200 active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed disabled:active:scale-100 select-none ${variantStyles[variant]} ${sizeStyles[size]} ${className}`}
       disabled={disabled || isLoading}
       {...props}
     >

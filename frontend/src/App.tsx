@@ -66,17 +66,17 @@ export const App: React.FC = () => {
 
   return (
     <BrowserRouter>
-      <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col font-sans selection:bg-cyan-500 selection:text-white">
+      <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col font-sans selection:bg-cyan-500/30 selection:text-cyan-200">
         <Navbar
           repositories={repositories}
           selectedRepo={selectedRepo}
           onSelectRepo={handleSelectRepo}
         />
 
-        <div className="flex flex-1 overflow-hidden">
+        <div className="flex flex-1 overflow-hidden relative">
           <Sidebar />
 
-          <main className="flex-1 overflow-y-auto bg-slate-950/50">
+          <main className="flex-1 overflow-y-auto bg-slate-950/40 relative">
             <Routes>
               <Route
                 path="/"

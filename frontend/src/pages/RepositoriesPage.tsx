@@ -177,29 +177,30 @@ export const RepositoriesPage: React.FC<RepositoriesPageProps> = ({
       </div>
 
       {/* Connected Repositories Table */}
-      <div className="bg-slate-900/60 border border-slate-800 rounded-xl overflow-hidden shadow-xl">
-        <div className="p-4 border-b border-slate-800 bg-slate-900/80 flex items-center justify-between">
-          <div className="text-xs font-bold uppercase tracking-wider text-slate-300">
-            Connected Repositories ({repositories.length})
+      <div className="glass-card rounded-2xl overflow-hidden shadow-2xl">
+        <div className="p-4 border-b border-slate-800/80 bg-slate-900/90 flex items-center justify-between">
+          <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-slate-200">
+            <span className="w-2 h-2 rounded-full bg-cyan-400" />
+            <span>Connected Repositories ({repositories.length})</span>
           </div>
-          <span className="text-[11px] text-slate-500">
-            Click any repository row to inspect its full architecture and dependencies below
+          <span className="text-[11px] text-slate-400">
+            Click any row to inspect its architecture and dependencies below
           </span>
         </div>
 
         <div className="overflow-x-auto">
           <table className="w-full text-left text-xs border-collapse">
             <thead>
-              <tr className="bg-slate-900 border-b border-slate-800 text-slate-400 font-semibold uppercase tracking-wider">
-                <th className="py-3 px-4">Repository</th>
-                <th className="py-3 px-4">Default Branch</th>
-                <th className="py-3 px-4">Files & Lines</th>
-                <th className="py-3 px-4">Status</th>
-                <th className="py-3 px-4">Languages</th>
-                <th className="py-3 px-4 text-right">Actions</th>
+              <tr className="bg-slate-950/80 border-b border-slate-800 text-slate-400 font-semibold uppercase tracking-wider">
+                <th className="py-3.5 px-4">Repository</th>
+                <th className="py-3.5 px-4">Default Branch</th>
+                <th className="py-3.5 px-4">Files & Lines</th>
+                <th className="py-3.5 px-4">Status</th>
+                <th className="py-3.5 px-4">Languages</th>
+                <th className="py-3.5 px-4 text-right">Actions</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-800 text-slate-300">
+            <tbody className="divide-y divide-slate-800/80 text-slate-300">
               {repositories.length === 0 ? (
                 <tr>
                   <td colSpan={6} className="py-12 text-center text-slate-400">
@@ -215,54 +216,56 @@ export const RepositoriesPage: React.FC<RepositoriesPageProps> = ({
                     <tr
                       key={repo.id}
                       onClick={() => onSelectRepo(repo)}
-                      className={`hover:bg-slate-850 cursor-pointer transition-colors ${
-                        isSelected ? 'bg-cyan-950/40 border-l-2 border-l-cyan-400' : ''
+                      className={`hover:bg-slate-850/80 cursor-pointer transition-all ${
+                        isSelected ? 'bg-gradient-to-r from-cyan-950/40 to-transparent border-l-4 border-l-cyan-400' : ''
                       }`}
                     >
-                      <td className="py-3 px-4 font-semibold text-slate-100">
+                      <td className="py-3.5 px-4 font-semibold text-slate-100">
                         <div className="flex items-center gap-2.5">
-                          <FolderGit2 className={`w-4 h-4 ${isSelected ? 'text-cyan-400' : 'text-slate-400'} flex-shrink-0`} />
+                          <div className={`p-1.5 rounded-lg border ${isSelected ? 'bg-cyan-950 border-cyan-500/40 text-cyan-400' : 'bg-slate-900 border-slate-800 text-slate-400'}`}>
+                            <FolderGit2 className="w-4 h-4 flex-shrink-0" />
+                          </div>
                           <div>
-                            <div className="flex items-center gap-1.5">
-                              <span className="hover:text-cyan-300">{repo.owner}/{repo.name}</span>
-                              {isSelected && <Badge variant="cyan" size="sm">ACTIVE SELECTION</Badge>}
+                            <div className="flex items-center gap-2">
+                              <span className="hover:text-cyan-300 font-semibold text-slate-100">{repo.owner}/{repo.name}</span>
+                              {isSelected && <Badge variant="cyan" size="sm" dot>ACTIVE</Badge>}
                             </div>
-                            <span className="text-[11px] text-slate-500 font-normal font-mono">
+                            <span className="text-[11px] text-slate-400 font-normal font-mono">
                               {repo.url}
                             </span>
                           </div>
                         </div>
                       </td>
 
-                      <td className="py-3 px-4 font-mono text-slate-300">
+                      <td className="py-3.5 px-4 font-mono text-slate-300">
                         <div className="flex items-center gap-1.5">
-                          <GitBranch className="w-3.5 h-3.5 text-slate-500" />
+                          <GitBranch className="w-3.5 h-3.5 text-cyan-400" />
                           <span>{repo.default_branch}</span>
                         </div>
                       </td>
 
-                      <td className="py-3 px-4 font-mono text-slate-300">
-                        <div>{repo.total_files} files</div>
-                        <div className="text-[11px] text-slate-500">{repo.total_lines?.toLocaleString()} lines</div>
+                      <td className="py-3.5 px-4 font-mono text-slate-300">
+                        <div className="font-semibold text-slate-200">{repo.total_files} files</div>
+                        <div className="text-[11px] text-slate-400">{repo.total_lines?.toLocaleString()} lines</div>
                       </td>
 
-                      <td className="py-3 px-4">
-                        <Badge variant={repo.status === 'indexed' ? 'success' : 'info'} size="sm">
+                      <td className="py-3.5 px-4">
+                        <Badge variant={repo.status === 'indexed' ? 'success' : 'info'} size="sm" dot>
                           {repo.status.toUpperCase()}
                         </Badge>
                       </td>
 
-                      <td className="py-3 px-4">
+                      <td className="py-3.5 px-4">
                         <div className="flex flex-wrap gap-1 max-w-xs">
                           {Object.entries(repo.languages || {}).slice(0, 3).map(([lang]) => (
-                            <span key={lang} className="text-[10px] bg-slate-800 text-slate-300 px-1.5 py-0.5 rounded border border-slate-700">
+                            <span key={lang} className="text-[10px] font-mono bg-slate-900 text-slate-300 px-2 py-0.5 rounded-md border border-slate-750">
                               {lang}
                             </span>
                           ))}
                         </div>
                       </td>
 
-                      <td className="py-3 px-4 text-right">
+                      <td className="py-3.5 px-4 text-right">
                         <div className="flex items-center justify-end gap-2" onClick={(e) => e.stopPropagation()}>
                           <Button
                             variant="outline"
@@ -297,7 +300,7 @@ export const RepositoriesPage: React.FC<RepositoriesPageProps> = ({
 
       {/* Selected Repository Comprehensive Intelligence Section */}
       {selectedRepo && (
-        <div className="bg-slate-900/60 border border-slate-800 rounded-2xl p-6 space-y-6 shadow-2xl">
+        <div className="glass-card rounded-2xl p-6 md:p-8 space-y-6 shadow-2xl relative overflow-hidden">
           {/* Active Repo Top Bar with Navigation Tabs */}
           <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 pb-4 border-b border-slate-800">
             <div className="flex items-center gap-3">
@@ -351,13 +354,13 @@ export const RepositoriesPage: React.FC<RepositoriesPageProps> = ({
           </div>
 
           {/* Dimension Selector Tabs */}
-          <div className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-none border-b border-slate-800">
+          <div className="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none border-b border-slate-800/80">
             <button
               onClick={() => setActiveTab('overview')}
-              className={`flex items-center gap-2 px-3.5 py-2 rounded-lg text-xs font-semibold transition-all whitespace-nowrap ${
+              className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-semibold transition-all whitespace-nowrap cursor-pointer ${
                 activeTab === 'overview'
-                  ? 'bg-cyan-500/10 text-cyan-400 border border-cyan-500/30 shadow-sm'
-                  : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/60'
+                  ? 'bg-cyan-500/15 text-cyan-300 border border-cyan-500/40 shadow-sm shadow-cyan-950/40'
+                  : 'text-slate-400 hover:text-slate-200 hover:bg-slate-850/80'
               }`}
             >
               <LayoutDashboard className="w-4 h-4 text-cyan-400" />
@@ -366,87 +369,90 @@ export const RepositoriesPage: React.FC<RepositoriesPageProps> = ({
 
             <button
               onClick={() => setActiveTab('structure')}
-              className={`flex items-center gap-2 px-3.5 py-2 rounded-lg text-xs font-semibold transition-all whitespace-nowrap ${
+              className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-semibold transition-all whitespace-nowrap cursor-pointer ${
                 activeTab === 'structure'
-                  ? 'bg-amber-500/10 text-amber-400 border border-amber-500/30 shadow-sm'
-                  : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/60'
+                  ? 'bg-amber-500/15 text-amber-300 border border-amber-500/40 shadow-sm shadow-amber-950/40'
+                  : 'text-slate-400 hover:text-slate-200 hover:bg-slate-850/80'
               }`}
             >
               <FolderTree className="w-4 h-4 text-amber-400" />
               <span>Repository Structure</span>
-              <span className="px-1.5 py-0.2 text-[10px] font-mono rounded bg-slate-800 text-slate-300">
+              <span className="px-2 py-0.5 text-[10px] font-mono rounded-full bg-slate-900 border border-slate-750 text-slate-300">
                 {overview?.root_directories?.length || 0}
               </span>
             </button>
 
             <button
               onClick={() => setActiveTab('files')}
-              className={`flex items-center gap-2 px-3.5 py-2 rounded-lg text-xs font-semibold transition-all whitespace-nowrap ${
+              className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-semibold transition-all whitespace-nowrap cursor-pointer ${
                 activeTab === 'files'
-                  ? 'bg-blue-500/10 text-blue-400 border border-blue-500/30 shadow-sm'
-                  : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/60'
+                  ? 'bg-blue-500/15 text-blue-300 border border-blue-500/40 shadow-sm shadow-blue-950/40'
+                  : 'text-slate-400 hover:text-slate-200 hover:bg-slate-850/80'
               }`}
             >
               <FileCode className="w-4 h-4 text-blue-400" />
-              <span>Files ({selectedRepo.total_files})</span>
+              <span>Files</span>
+              <span className="px-2 py-0.5 text-[10px] font-mono rounded-full bg-slate-900 border border-slate-750 text-slate-300">
+                {selectedRepo.total_files}
+              </span>
             </button>
 
             <button
               onClick={() => setActiveTab('dependencies')}
-              className={`flex items-center gap-2 px-3.5 py-2 rounded-lg text-xs font-semibold transition-all whitespace-nowrap ${
+              className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-semibold transition-all whitespace-nowrap cursor-pointer ${
                 activeTab === 'dependencies'
-                  ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 shadow-sm'
-                  : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/60'
+                  ? 'bg-emerald-500/15 text-emerald-300 border border-emerald-500/40 shadow-sm shadow-emerald-950/40'
+                  : 'text-slate-400 hover:text-slate-200 hover:bg-slate-850/80'
               }`}
             >
               <Package className="w-4 h-4 text-emerald-400" />
               <span>Dependencies</span>
-              <span className="px-1.5 py-0.2 text-[10px] font-mono rounded bg-slate-800 text-slate-300">
+              <span className="px-2 py-0.5 text-[10px] font-mono rounded-full bg-slate-900 border border-slate-750 text-slate-300">
                 {dependencies.length || overview?.dependencies_count || 0}
               </span>
             </button>
 
             <button
               onClick={() => setActiveTab('languages')}
-              className={`flex items-center gap-2 px-3.5 py-2 rounded-lg text-xs font-semibold transition-all whitespace-nowrap ${
+              className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-semibold transition-all whitespace-nowrap cursor-pointer ${
                 activeTab === 'languages'
-                  ? 'bg-cyan-500/10 text-cyan-400 border border-cyan-500/30 shadow-sm'
-                  : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/60'
+                  ? 'bg-cyan-500/15 text-cyan-300 border border-cyan-500/40 shadow-sm shadow-cyan-950/40'
+                  : 'text-slate-400 hover:text-slate-200 hover:bg-slate-850/80'
               }`}
             >
               <Code2 className="w-4 h-4 text-cyan-400" />
-              <span>Programming Languages</span>
-              <span className="px-1.5 py-0.2 text-[10px] font-mono rounded bg-slate-800 text-slate-300">
+              <span>Languages</span>
+              <span className="px-2 py-0.5 text-[10px] font-mono rounded-full bg-slate-900 border border-slate-750 text-slate-300">
                 {Object.keys(overview?.languages || selectedRepo.languages || {}).length}
               </span>
             </button>
 
             <button
               onClick={() => setActiveTab('frameworks')}
-              className={`flex items-center gap-2 px-3.5 py-2 rounded-lg text-xs font-semibold transition-all whitespace-nowrap ${
+              className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-semibold transition-all whitespace-nowrap cursor-pointer ${
                 activeTab === 'frameworks'
-                  ? 'bg-pink-500/10 text-pink-400 border border-pink-500/30 shadow-sm'
-                  : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/60'
+                  ? 'bg-pink-500/15 text-pink-300 border border-pink-500/40 shadow-sm shadow-pink-950/40'
+                  : 'text-slate-400 hover:text-slate-200 hover:bg-slate-850/80'
               }`}
             >
               <Sparkles className="w-4 h-4 text-pink-400" />
-              <span>Frameworks & Libraries</span>
-              <span className="px-1.5 py-0.2 text-[10px] font-mono rounded bg-slate-800 text-slate-300">
+              <span>Frameworks</span>
+              <span className="px-2 py-0.5 text-[10px] font-mono rounded-full bg-slate-900 border border-slate-750 text-slate-300">
                 {frameworks.length || overview?.frameworks?.length || 0}
               </span>
             </button>
 
             <button
               onClick={() => setActiveTab('symbols')}
-              className={`flex items-center gap-2 px-3.5 py-2 rounded-lg text-xs font-semibold transition-all whitespace-nowrap ${
+              className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-semibold transition-all whitespace-nowrap cursor-pointer ${
                 activeTab === 'symbols'
-                  ? 'bg-purple-500/10 text-purple-400 border border-purple-500/30 shadow-sm'
-                  : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/60'
+                  ? 'bg-purple-500/15 text-purple-300 border border-purple-500/40 shadow-sm shadow-purple-950/40'
+                  : 'text-slate-400 hover:text-slate-200 hover:bg-slate-850/80'
               }`}
             >
               <Cpu className="w-4 h-4 text-purple-400" />
               <span>AST Symbols</span>
-              <span className="px-1.5 py-0.2 text-[10px] font-mono rounded bg-slate-800 text-slate-300">
+              <span className="px-2 py-0.5 text-[10px] font-mono rounded-full bg-slate-900 border border-slate-750 text-slate-300">
                 {entities.length || overview?.entities_count || 0}
               </span>
             </button>
